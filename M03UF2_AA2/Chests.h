@@ -7,10 +7,10 @@
 
 struct Gear {
 
-	int value;
-
 	std::string nameGear;
+	std::string descriptionGear;
 
+	int value;
 	int health;
 	int stamina;
 	int agility;
@@ -32,4 +32,4 @@ struct Chest {
 };
 
 void InitializeChest(Chest* chest, Gear allGears[10], MapPosition* chestPosition);
-void InitGears(Gear allGears[10]); // TODO
+void InitGears(Gear allGears[10]); 

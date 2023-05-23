@@ -13,7 +13,7 @@ struct Map {
 	Chest listChests[2];
 	Player player;
 	void Dungeon();
-
+	void EnemyMovement();
 };
 
 enum Scene { MENU, DUNGEON, COMBAT, CHEST, GAMEOVER };

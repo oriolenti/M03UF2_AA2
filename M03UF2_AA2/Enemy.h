@@ -11,8 +11,10 @@ struct Enemy {
 	bool isDead;
 
 	int health;
+	int maxHealth;
 
 	int stamina;
+	int maxStamina;
 };
 
 

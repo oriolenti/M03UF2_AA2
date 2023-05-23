@@ -1,9 +1,2 @@
-﻿  Chests.cpp
-  Enemy.cpp
-  main.cpp
-C:\Users\oriol\Documents\M03UF2_AA2\M03UF2_AA2\main.cpp(6,15): warning C4244: 'argumento': conversión de 'time_t' a 'unsigned int'; posible pérdida de datos
-  MainManager.cpp
-  map.cpp
-  Player.cpp
-  Generando código...
+﻿  MainManager.cpp
   M03UF2_AA2.vcxproj -> C:\Users\oriol\Documents\M03UF2_AA2\x64\Debug\M03UF2_AA2.exe

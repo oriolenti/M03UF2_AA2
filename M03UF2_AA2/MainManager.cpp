@@ -114,139 +114,126 @@ void Map::Dungeon() {
 	std::cout << std::endl;
 	std::cout << std::endl;
 
-	std::string action;
+	char action;
 	std::cout << " Enter your action: ";
-	std::getline(std::cin, action);
+	std::cin >> action;
+	bool gameOver = false;
 
+	//Valid Actions
+	while (!gameOver) {
 
-	//Let's define the Valid Actions
-	if (player.agility > 0)
-	{
-		if (action == "W")
-		{
-			if (player.playerPosition.x - 1 < 0) {
-				// cant move that way
-				std::cout << "Invalid position" << std::endl;
-				system("pause");
-			}
-			else {
-				player.agility--;
-				player.playerPosition.x--;
-			}
-
-		}
-		else if (action == "S")
-		{
-			if (player.playerPosition.x + 1 >= MAP_SIZE) {
-				// cant move that way
-				std::cout << "Invalid position" << std::endl;
-				system("pause");
-			}
-			else {
-				player.agility--;
-				player.playerPosition.x++;
-			}
-		}
-		else if (action == "A")
-		{
-			if (player.playerPosition.y - 1 < 0) {
-				// cant move that way
-				std::cout << "Invalid position" << std::endl;
-				system("pause");
-			}
-			else {
-				player.agility--;
-				player.playerPosition.y--;
-			}
-		}
-		else if (action == "D")
-		{
-			if (player.playerPosition.y + 1 >= MAP_SIZE) {
-				// cant move that way
-				std::cout << "Invalid position" << std::endl;
-				system("pause");
-			}
-			else {
-				player.agility--;
-				player.playerPosition.y++;
-			}
-		}
-
-		else if (action == "P")
-		{
-			if (player.potion >= 1)
+		if (player.agility > 1) {
+			if (action == 'W')
 			{
-
-				//Healing more than maxHealth = Full Heal
-				if ((player.health + (player.health * 0, 4)) >= player.maxHealth)
-				{
-					player.agility--;
-					player.potion--;
-					player.health = player.maxHealth;
-					std::cout << "You fully healed!" << std::endl;
+				if (player.playerPosition.x - 1 < 0) {
+					// cant move that way
+					std::cout << "Invalid position" << std::endl;
+					system("pause");
 				}
-				//Else Heal 40%
+				else {
+					player.agility--;
+					player.playerPosition.x--;
+				}
+
+			}
+			else if (action == 'S')
+			{
+				if (player.playerPosition.x + 1 >= MAP_SIZE) {
+					// cant move that way
+					std::cout << "Invalid position" << std::endl;
+					system("pause");
+				}
+				else {
+					player.agility--;
+					player.playerPosition.x++;
+				}
+			}
+			else if (action == 'A')
+			{
+				if (player.playerPosition.y - 1 < 0) {
+					// cant move that way
+					std::cout << "Invalid position" << std::endl;
+					system("pause");
+				}
+				else {
+					player.agility--;
+					player.playerPosition.y--;
+				}
+			}
+			else if (action == 'D')
+			{
+				if (player.playerPosition.y + 1 >= MAP_SIZE) {
+					// cant move that way
+					std::cout << "Invalid position" << std::endl;
+					system("pause");
+				}
+				else {
+					player.agility--;
+					player.playerPosition.y++;
+				}
+			}
+
+			else if (action == 'P')
+			{
+				if (player.potion >= 1)
+				{
+
+					//Healing more than maxHealth = Full Heal
+					if ((player.health + (player.health * 0, 4)) >= player.maxHealth)
+					{
+						player.agility--;
+						player.potion--;
+						player.health = player.maxHealth;
+						std::cout << "You fully healed!" << std::endl;
+					}
+					//Else Heal 40%
+					else
+					{
+						player.agility--;
+						std::cout << "You healed " << (player.health * 0, 4) << "HP" << std::endl;
+						player.potion--;
+						player.health = (player.health + (player.health * 0, 4));
+
+
+					}
+				}
 				else
 				{
-					player.agility--;
-					std::cout << "You healed " << (player.health * 0, 4) << "HP" << std::endl;
-					player.potion--;
-					player.health = (player.health + (player.health * 0, 4));
-
-
+					std::cout << "You don't have any potions!" << std::endl;
+					system("clear");
 				}
 			}
 			else
 			{
-				std::cout << "You don't have any potions!" << std::endl;
-				system("clear");
+				std::cout << "Invalid command, enter a new one" << std::endl;
+				system("pause");
+				//system("clear");
 			}
+			Dungeon();
 		}
-		else
+		else //If Player's Agility falls to 0, Enemies move again around the map
 		{
-			std::cout << "Invalid command, enter a new one" << std::endl;
-			system("pause");
-			//system("clear");
+			EnemyMovement();
 		}
-		Dungeon();
 	}
-	else //If Player's Agility falls to 0, Enemies move again around the map
-	{
-		for (int k = 0; k < 1; k++) {
-			std::cout << " ";
+}
 
-			for (int i = 0; i < MAP_SIZE; i++) {
-				std::cout << " ___ ";
-			}
-			std::cout << std::endl;
+void Map::EnemyMovement() {
+	for (int i = 0; i < numEnemies; i++) {
+		int randomDirection = GenerateClampedRandom(0, 3);
 
-			for (int i = 0; i < MAP_SIZE; i++) {
-				std::cout << " ";
-
-				for (int j = 0; j < MAP_SIZE; j++) {
-					std::cout << "|   |";
-				}
-				std::cout << std::endl;
-				std::cout << " ";
-
-				for (int j = 0; j < MAP_SIZE; j++) {
-					char value = ' ';
-
-					for (Enemy e : listEnemies) {
-						if (e.enemyPosition.y == j && e.enemyPosition.x == i) {
-							value = 'E';
-						}
-					}
-					std::cout << "| " << value << " |";
-				}
-				std::cout << std::endl;
-				std::cout << " ";
-
-				for (int j = 0; j < MAP_SIZE; j++) {
-					std::cout << "|___|";
-				}
-				std::cout << std::endl;
-			}
+		// Mover el enemigo en la dirección aleatoria
+		if (randomDirection == 0 && listEnemies[i].enemyPosition.x - 1 >= 0) {
+			listEnemies[i].enemyPosition.x--;
+		}
+		else if (randomDirection == 1 && listEnemies[i].enemyPosition.x + 1 < MAP_SIZE) {
+			listEnemies[i].enemyPosition.x++;
+		}
+		else if (randomDirection == 2 && listEnemies[i].enemyPosition.y - 1 >= 0) {
+			listEnemies[i].enemyPosition.y--;
+		}
+		else if (randomDirection == 3 && listEnemies[i].enemyPosition.y + 1 < MAP_SIZE) {
+			listEnemies[i].enemyPosition.y++;
 		}
 	}
 }
