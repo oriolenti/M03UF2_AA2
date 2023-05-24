@@ -31,7 +31,8 @@ void InitGame(Map* map) {
 	}
 	// --------------------- CHEST ----------------------
 	//initialize chests
-	for (int i = 0; i < 2; i++) {
+	map->numChests = 2;
+	for (int i = 0; i < map->numChests; i++) {
 		do {
 			valid = true;
 			//e->position.x = 3;
@@ -52,7 +53,8 @@ void InitGame(Map* map) {
 }
 
 void Map::Dungeon() {
-	std::cout << " --------------- D U N G E O N ---------------" << std::endl;
+
+	std::cout << "--------------- D U N G E O N ---------------" << std::endl;
 	std::cout << std::endl;
 	std::cout << " E -> Enemy	P -> Player	C -> Chest" << std::endl;
 	std::cout << std::endl;
@@ -106,6 +108,8 @@ void Map::Dungeon() {
 		}
 	}
 
+	system("cls");
+
 	std::cout << std::endl;
 	std::cout << " ---------------------------------------------" << std::endl;
 	std::cout << std::endl;
@@ -118,11 +122,12 @@ void Map::Dungeon() {
 	std::cout << " Enter your action: ";
 	std::cin >> action;
 	bool gameOver = false;
+	
 
 	//Valid Actions
 	while (!gameOver) {
 
-		if (player.agility > 1) {
+		if (player.agility > 0) {
 			if (action == 'W')
 			{
 				if (player.playerPosition.x - 1 < 0) {
@@ -209,11 +214,237 @@ void Map::Dungeon() {
 				system("pause");
 				//system("clear");
 			}
-			Dungeon();
+
+			// Obtener la posición y valor de la casilla actual de Player
+			char currentValue = ' ';
+			for (Enemy e : listEnemies) {
+				if (player.playerPosition.x == e.enemyPosition.x && player.playerPosition.y == e.enemyPosition.y) {
+					currentValue = 'E';
+
+					break;
+				}
+			}
+			if (currentValue != 'E') {
+				for (Chest c : listChests) {
+					if (player.playerPosition.x == c.chestPosition.x && player.playerPosition.y == c.chestPosition.y) {
+						currentValue = 'C';
+						break;
+					}
+				}
+			}	
+
+			// Si coincide casilla entonces
+			if (currentValue == 'E') {
+				Combat();
+				currentValue == ' ';
+			}
+			else if (currentValue == 'C') {
+				OpenChest();
+			}
+			else {
+				return;
+			}
+
 		}
 		else //If Player's Agility falls to 0, Enemies move again around the map
 		{
+			player.agility = player.maxAgility;
 			EnemyMovement();
+		}
+		return Dungeon();
+	}
+	
+
+}
+
+void OpenChest() {
+	system("cls");
+	Chest c;
+	Player p;
+
+	if (!c.isLooted)
+	{
+		std::cout << "------ CHEST ------" << std::endl;
+		std::cout << "\n > You open the chest and it contains: " << std::endl;
+		std::cout << "\n\t> " << c.gold << " gold!" << std::endl;
+		std::cout << "\t> Also you got the wonderful " << c.gear.nameGear << std::endl;
+		std::cout << std::endl;
+
+		if (c.ContainsPotion)
+		{
+			if (p.potion >= p.maxPotion)
+				std::cout << "\t\t> You already have max amount of potions!" << std::endl;
+			else
+				std::cout << "\t> You got a potion!" << std::endl;
+				p.potion++;
+		}
+
+		std::cout << "\n______________________________________\n" << std::endl;
+		c.isLooted = true;
+		system("pause");
+	}
+}
+
+void Map::PrintBar(char fill, int value, int maxValue) {
+	int barSize = 10;
+	int printBars = ((float)value / (float)maxValue) * 10.0f;
+	if (value != 0) {
+		printBars = std::max(1, printBars);
+	}
+
+	std::cout << "[";
+
+	for (int i = 0; i < barSize; i++) {
+		if (i < printBars) {
+			std::cout << fill;
+		}
+		else {
+			std::cout << " ";
+		}
+	}
+
+	std::cout << "] ";
+}
+
+int Map::EnemyAction() {
+	Enemy* e = new Enemy;
+
+	if (e->health < e->maxHealth * 0.3f && e->stamina < e->maxStamina * 0.3f) {
+		return 0;
+	}
+	if (e->stamina < e->maxStamina * 0.2f) {
+		return 1;
+	}
+	return 2;
+}
+
+void Map::Combat() {
+	char action;
+	Enemy* e = new Enemy;
+	Player p;
+	int amountBet;
+	int eAttack = (20 + (rand() % (e->stamina - 20))) + 1;
+
+	while (!p.isDead && !e->isDead) {
+		std::system("cls");
+		std::cout << "------ COMBAT ------\n" << std::endl;
+		std::cout << "-- " << "Enemy" << " --" << std::endl;
+		PrintBar('=', e->health, e->maxHealth);
+		std::cout << " ? HP" << std::endl;
+		PrintBar('>', e->stamina, e->maxStamina);
+		std::cout << " ? Stamina\n" << std::endl;
+		std::cout << "-----------------\n" << std::endl;
+		std::cout << "-- Player --" << std::endl;
+		PrintBar('=', player.health, player.maxHealth);
+		std::cout << " " << player.health << " / " << player.maxHealth << " HP" << std::endl;
+		PrintBar('>', player.stamina, player.maxStamina);
+		std::cout << " " << player.stamina << " / " << player.maxStamina << " Stamina\n" << std::endl;
+		std::cout << "Potions " << player.potion << " / " << player.maxPotion << "\n" << std::endl;
+		std::cout << "______________________________________\n" << std::endl;
+		std::cout << "A -> Attack" << std::endl;
+		std::cout << "D -> Defend" << std::endl;
+		std::cout << "R -> Rest" << std::endl;
+		std::cout << "P -> Potion\n" << std::endl;
+		std::cout << "Enter your action: ";
+		std::cin >> action;
+		std::cout << std::endl;
+
+		int eAction = EnemyAction();
+
+		if (action == 'A' || action == 'a') {
+			std::cout << "Enter the attack value " << "(Max " << player.maxStamina << "): ";
+			std::cin >> amountBet;
+			std::cout << std::endl;
+			switch (eAction) {
+			case 2:
+				if (player.stamina > e->stamina) {
+					e->health -= amountBet;
+					e->stamina -= e->stamina;
+					player.stamina -= amountBet;
+					if (player.stamina < 0) {
+						player.stamina = 0;
+					}
+					if (e->stamina < 0) {
+						e->stamina = 0;
+					}
+					std::cout << "You strike the enemy with more force! The enemy receives " << amountBet << " damage" << std::endl;
+				}
+				else {
+					player.health -= eAttack;
+					e->stamina -= eAttack;
+					player.stamina -= amountBet;
+					if (player.stamina < 0) {
+						player.stamina = 0;
+					}
+					if (e->stamina < 0) {
+						e->stamina = 0;
+					}
+					std::cout << "The enemy strikes with more force! You receive " << eAttack << " damage" << std::endl;
+				}
+				system("pause");
+				system("cls");
+				//IfWin();
+				//IfLose(enemy);
+				break;
+			case 0:
+				e->health -= amountBet * 0.25f;
+				e->stamina += e->maxStamina * 0.25f;
+				player.stamina -= amountBet;
+				if (player.stamina < 0) {
+					player.stamina = 0;
+				}
+				if (e->stamina > e->maxStamina) {
+					e->stamina = e->maxStamina;
+				}
+				std::cout << "The enemy defends, but receives " << amountBet << " damage\n" << std::endl;
+				break;
+			case 1:
+				e->health -= amountBet;
+				e->stamina = e->maxStamina;
+				player.stamina -= amountBet;
+				std::cout << "You strike the unprepared enemy dealing " << amountBet << " damage!\n" << std::endl;
+				break;
+			}
+		}
+		else if (action == 'D' || action == 'd') {
+			switch (eAction) {
+			case 2:
+				player.health -= eAttack * 0.25f;
+				e->stamina -= eAttack;
+				if (e->stamina < 0) {
+					e->stamina = 0;
+				}
+				std::cout << "You defend the enemy's blow, but receive " << eAttack << " damage\n" << std::endl;
+				break;
+			case 0:
+				e->stamina += e->maxStamina * 0.25f;
+				if (e->stamina > e->maxStamina) {
+					e->stamina = e->maxStamina;
+				}
+				std::cout << "You both defended yourselves...\n" << std::endl;
+				break;
+			case 1:
+				e->stamina = e->maxStamina;
+				std::cout << "You defend while the enemy catches a breath! It seems ready to strike!\n" << std::endl;
+				break;
+			}
+			player.stamina += player.maxStamina * 0.25f;
+			if (player.stamina > player.maxStamina) {
+				player.stamina = player.maxStamina;
+			}
+		}
+		else if (action == 'R' || action == 'r') {
+			player.stamina = player.maxStamina;
+		}
+		else if ((action == 'P' || action == 'p') && player.potion > 0) {
+			if (player.potion <= 0) {
+				std::cout << "You have no potions" << std::endl;
+			}
+			else {
+				std::cout << "You drink the potion when the enemy hits you, striking for " << eAttack << " damage" << std::endl;
+				player.health += player.maxHealth * 0.4f;
+				player.potion--;
+			}
 		}
 	}
 }
@@ -221,8 +452,7 @@ void Map::Dungeon() {
 void Map::EnemyMovement() {
 	for (int i = 0; i < numEnemies; i++) {
 		int randomDirection = GenerateClampedRandom(0, 3);
-
-		// Mover el enemigo en la dirección aleatoria
+		// Random enemy position again
 		if (randomDirection == 0 && listEnemies[i].enemyPosition.x - 1 >= 0) {
 			listEnemies[i].enemyPosition.x--;
 		}
@@ -236,4 +466,5 @@ void Map::EnemyMovement() {
 			listEnemies[i].enemyPosition.y++;
 		}
 	}
+	return Dungeon();
 }

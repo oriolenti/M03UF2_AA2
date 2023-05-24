@@ -18,11 +18,14 @@ struct Player {
 	int agility;
 	int potion;
 
+	bool isDead = false;
+
 	// ----- MAX VALUES -----
 
 	int maxAgility;
 	int maxHealth;
 	int maxStamina;
+	int maxPotion = MAX_POTION;
 
 };
 
