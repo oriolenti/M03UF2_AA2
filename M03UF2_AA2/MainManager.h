@@ -20,11 +20,13 @@ struct Map {
 	void Dungeon();
 	void EnemyMovement();
 	
-	void Combat();
+	void Combat(Player* p, Enemy* e);
 	void PrintBar(char fillCharacter, int value, int maxValue);
-	int EnemyAction();
+	int EnemyAction(Enemy* e);
 	
-	void OpenChest();
+	void OpenChest(Player* p, Chest* c);
+
+	void GameOver(Player* p);
 };
 
 enum Scene { MENU, DUNGEON, COMBAT, CHEST, GAMEOVER };

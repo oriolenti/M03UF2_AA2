@@ -1,11 +1,11 @@
 ﻿  MainManager.cpp
-C:\Users\oriol\Documents\M03UF2_AA2\M03UF2_AA2\MainManager.cpp(239,18): warning C4553: "==": el resultado de la expresión no se usa. ¿Quiso decir "="?
-C:\Users\oriol\Documents\M03UF2_AA2\M03UF2_AA2\MainManager.cpp(290,16): warning C4244: 'inicializando': conversión de 'float' a 'int'; posible pérdida de datos
-C:\Users\oriol\Documents\M03UF2_AA2\M03UF2_AA2\MainManager.cpp(390,28): warning C4244: '-=': conversión de 'float' a 'int'; posible pérdida de datos
-C:\Users\oriol\Documents\M03UF2_AA2\M03UF2_AA2\MainManager.cpp(391,33): warning C4244: '+=': conversión de 'float' a 'int'; posible pérdida de datos
-C:\Users\oriol\Documents\M03UF2_AA2\M03UF2_AA2\MainManager.cpp(412,30): warning C4244: '-=': conversión de 'float' a 'int'; posible pérdida de datos
-C:\Users\oriol\Documents\M03UF2_AA2\M03UF2_AA2\MainManager.cpp(420,33): warning C4244: '+=': conversión de 'float' a 'int'; posible pérdida de datos
-C:\Users\oriol\Documents\M03UF2_AA2\M03UF2_AA2\MainManager.cpp(431,40): warning C4244: '+=': conversión de 'float' a 'int'; posible pérdida de datos
-C:\Users\oriol\Documents\M03UF2_AA2\M03UF2_AA2\MainManager.cpp(445,39): warning C4244: '+=': conversión de 'float' a 'int'; posible pérdida de datos
-MainManager.obj : error LNK2019: símbolo externo "public: void __cdecl Map::OpenChest(void)" (?OpenChest@Map@@QEAAXXZ) sin resolver al que se hace referencia en la función "public: void __cdecl Map::Dungeon(void)" (?Dungeon@Map@@QEAAXXZ)
-C:\Users\oriol\Documents\M03UF2_AA2\x64\Debug\M03UF2_AA2.exe : fatal error LNK1120: 1 externos sin resolver
+C:\Users\oriol\Documents\M03UF2_AA2\M03UF2_AA2\MainManager.cpp(348,12): warning C4552: "+": el resultado de la expresión no se usa
+C:\Users\oriol\Documents\M03UF2_AA2\M03UF2_AA2\MainManager.cpp(361,16): warning C4244: 'inicializando': conversión de 'float' a 'int'; posible pérdida de datos
+C:\Users\oriol\Documents\M03UF2_AA2\M03UF2_AA2\MainManager.cpp(464,28): warning C4244: '-=': conversión de 'float' a 'int'; posible pérdida de datos
+C:\Users\oriol\Documents\M03UF2_AA2\M03UF2_AA2\MainManager.cpp(465,33): warning C4244: '+=': conversión de 'float' a 'int'; posible pérdida de datos
+C:\Users\oriol\Documents\M03UF2_AA2\M03UF2_AA2\MainManager.cpp(492,26): warning C4244: '-=': conversión de 'float' a 'int'; posible pérdida de datos
+C:\Users\oriol\Documents\M03UF2_AA2\M03UF2_AA2\MainManager.cpp(500,33): warning C4244: '+=': conversión de 'float' a 'int'; posible pérdida de datos
+C:\Users\oriol\Documents\M03UF2_AA2\M03UF2_AA2\MainManager.cpp(511,32): warning C4244: '+=': conversión de 'float' a 'int'; posible pérdida de datos
+C:\Users\oriol\Documents\M03UF2_AA2\M03UF2_AA2\MainManager.cpp(533,33): warning C4244: '+=': conversión de 'float' a 'int'; posible pérdida de datos
+C:\Users\oriol\Documents\M03UF2_AA2\M03UF2_AA2\MainManager.cpp(555,31): warning C4244: '+=': conversión de 'float' a 'int'; posible pérdida de datos
+  M03UF2_AA2.vcxproj -> C:\Users\oriol\Documents\M03UF2_AA2\x64\Debug\M03UF2_AA2.exe
